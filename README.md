@@ -11,5 +11,5 @@ This Docker image is based on [jpetazzo/dind](https://registry.hub.docker.com/u/
 Run it with mounted directory from host:
 
 ```
-docker run --name jenkins-dind --privileged -d -p 8080:8080 -v /your/path:/var/lib/jenkins marceloalmeida/docker-jenkins-dind
+docker run --name jenkins-dind --privileged -d -p 8080:8080 -v /your/path:/var/lib/jenkins zephyrwebhq/docker-jenkins-dind
 ```
