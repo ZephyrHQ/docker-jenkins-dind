@@ -4,7 +4,7 @@ MAINTAINER Marcelo Almeida <ms.almeida86@gmail.com>
 
 ENV \
   DEBIAN_FRONTEND="noninteractive" \
-  JENKINS_VERSION="2.92"
+  JENKINS_VERSION="2.101"
 
 # Let's start with some basic stuff.
 RUN apt-get update && apt-get -t jessie-backports install -y --no-install-recommends \
@@ -21,6 +21,7 @@ RUN apt-get update && apt-get -t jessie-backports install -y --no-install-recomm
     daemon \
     net-tools \
     ssh \
+    make \
     psmisc && \
     curl -s -L -O http://pkg.jenkins-ci.org/debian/binary/jenkins_${JENKINS_VERSION}_all.deb && \
     dpkg -i jenkins_${JENKINS_VERSION}_all.deb && \
@@ -52,6 +53,14 @@ RUN \
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Upgrade Jenkins write
+RUN echo "jenkins    ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
 EXPOSE 8080
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+
+USER jenkins
+ADD log.properties /var/lib/jenkins/log.properties
+ENV JAVA_OPTS="-Djava.util.logging.config.file=/var/lib/jenkins/log.properties"
