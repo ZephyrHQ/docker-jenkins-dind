@@ -64,3 +64,4 @@ CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 USER jenkins
 ADD log.properties /var/lib/jenkins/log.properties
 ENV JAVA_OPTS="-Djava.util.logging.config.file=/var/lib/jenkins/log.properties"
+USER root
