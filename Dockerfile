@@ -4,7 +4,8 @@ MAINTAINER Marcelo Almeida <ms.almeida86@gmail.com>
 
 ENV \
   DEBIAN_FRONTEND="noninteractive" \
-  JENKINS_VERSION="2.138"
+  JENKINS_VERSION="2.150" \
+  COMPOSE_VERSION="1.23.2"
 
 # Let's start with some basic stuff.
 RUN apt-get update && apt-get -t jessie-backports install -y --no-install-recommends \
@@ -55,7 +56,7 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Upgrade Jenkins write
 RUN echo "jenkins    ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
-RUN curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+RUN curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 EXPOSE 8080
 
